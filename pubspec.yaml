@@ -39,15 +39,31 @@ dependencies:
 
   # network
   dio: ^4.0.6
+  data_connection_checker_nulls: ^0.0.2
 
   # objects equals
   equatable: ^2.0.5
+
+  # test
+  mockito: ^5.3.2
+
+  # service locator
+  get_it: ^7.2.0
+
+  # state management
+  flutter_bloc: ^8.1.1
+
+  # Functional programming thingies
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+
+  # for generate class
+  build_runner: ^2.2.1
 
 flutter:
 
