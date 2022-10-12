@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:instagram_clone/features/auth/data/models/user_model.dart';
+import 'package:instagram_clone/core/error/exception.dart';
+import 'package:instagram_clone/features/auth/domain/entities/user_entity.dart' as entity;
 
 abstract class FireAuthDataSource {
-  Future<User?> signUpUser(UserModel user);
+  Future<User> signUpUser(entity.User user);
 
-  Future<User?> signInUser(String email, String password);
+  Future<User> signInUser(String email, String password);
 
   Future<bool> signOutUser();
 
@@ -23,9 +24,14 @@ class FireAuthDataSourceIml extends FireAuthDataSource {
   }
 
   @override
-  Future<User?> signInUser(String email, String password) async {
+  Future<User> signInUser(String email, String password) async {
     UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
-    return userCredential.user;
+    var user = userCredential.user;
+    if(user != null) {
+      return user;
+    } else {
+      throw ServerException();
+    }
   }
 
   @override
@@ -35,10 +41,14 @@ class FireAuthDataSourceIml extends FireAuthDataSource {
   }
 
   @override
-  Future<User?> signUpUser(UserModel user) async {
+  Future<User> signUpUser(entity.User user) async {
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: user.email, password: user.password);
     await auth.currentUser?.updateDisplayName(user.fullName);
     User? newUser = userCredential.user;
-    return newUser;
+    if(newUser != null) {
+      return newUser;
+    } else {
+      throw ServerException();
+    }
   }
 }

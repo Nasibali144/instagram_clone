@@ -12,11 +12,6 @@ class SignUpUserUseCase extends UseCase<User, SignUpParams> {
 
   @override
   Future<Either<Failure, User>> call(SignUpParams params) async {
-    // var checkingEmail = Checking.emailChecking(params.email);
-    // var checkingPassword = Checking.passwordChecking(params.password);
-    // var checkingConfirmPassword = Checking.passwordChecking(params.confirmPassword);
-    // var checkingName = Checking.nameChecking(params.fullName);
-
     User user = User(fullName: params.fullName, email: params.email, password: params.password);
     return await authRepository.signUpUser(user);
   }
