@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 class Convertor {
   static User convertEntity(auth.User authUser, User user) {
     user.uid = authUser.uid;
-    user.fullName = authUser.displayName!;
+    if(authUser.displayName != null) {
+      user.fullName = authUser.displayName!;
+    }
     user.email = authUser.email!;
     return user;
   }

@@ -25,11 +25,16 @@ class FireAuthDataSourceIml extends FireAuthDataSource {
 
   @override
   Future<User> signInUser(String email, String password) async {
-    UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
-    var user = userCredential.user;
-    if(user != null) {
-      return user;
-    } else {
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+      var user = userCredential.user;
+      if(user != null) {
+        return user;
+      } else {
+        throw ServerException();
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
       throw ServerException();
     }
   }

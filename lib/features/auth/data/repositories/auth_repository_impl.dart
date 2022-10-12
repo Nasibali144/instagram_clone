@@ -40,13 +40,15 @@ class AuthRepositoryImpl extends AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         User user = User(fullName: "no name", email: email, password: password);
-        user = Convertor.convertEntity(
-            await fireAuth.signInUser(email, password), user);
+        user = Convertor.convertEntity(await fireAuth.signInUser(email, password), user);
         await localAuth.storeData(StorageKeys.UID, user.uid);
 
         /// TODO: Store DataService
         return Right(user);
       } on ServerException {
+        return Left(ServerFailure());
+      } catch(e) {
+        print(e);
         return Left(ServerFailure());
       }
     } else {

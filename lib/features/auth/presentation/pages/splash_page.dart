@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/features/auth/presentation/pages/signin_page.dart';
+import 'package:instagram_clone/features/auth/presentation/pages/signup_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -26,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
   //   );
   // }
 
-  // void _openSignInPage() => Timer(const Duration(seconds: 2), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => _starterPage())));
+  void _openSignInPage() => Timer(const Duration(seconds: 2), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignInPage())));
 
   // _initNotification() async {
   //   await _firebaseMessaging.requestPermission(
@@ -46,13 +50,13 @@ class _SplashPageState extends State<SplashPage> {
   //     Prefs.store(StorageKeys.TOKEN, token!);
   //   });
   // }
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _openSignInPage();
-  //   _initNotification();
-  // }
+
+  @override
+  void initState() {
+    super.initState();
+    _openSignInPage();
+    // _initNotification();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
