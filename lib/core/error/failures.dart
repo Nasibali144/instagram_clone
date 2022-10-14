@@ -22,3 +22,12 @@ class ConnectFailure extends Failure {
   @override
   List<Object?> get props => [];
 }
+
+class OtherFailure extends Failure {
+
+  final String message;
+  const OtherFailure(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

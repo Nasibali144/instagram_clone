@@ -3,8 +3,8 @@ import 'package:instagram_clone/core/constants/folders.dart';
 import 'package:instagram_clone/features/auth/data/models/user_model.dart';
 
 abstract class FireStoreUserDataSource {
-  Future<void> storeUser(UserModel user);
-  Future<UserModel> loadUser(String uid);
+  Future<void> storeUser(UserModel user); // OK
+  Future<UserModel> loadUser(String uid); //
   Future<void> updateUser(String uid, UserModel user);
   Future<List<UserModel>> searchUser(String keyword, String uid);
   Future<void> followUser(UserModel userOne, UserModel userTwo);
@@ -33,7 +33,7 @@ class FireStoreUserDataSourceImpl implements FireStoreUserDataSource {
 
   @override
   Future<void> updateUser(String uid, UserModel user) async {
-    await fireStore.collection(folderUsers).doc(user.uid).update(user.toJson());
+    await fireStore.collection(folderUsers).doc(uid).update(user.toJson());
   }
 
   @override
