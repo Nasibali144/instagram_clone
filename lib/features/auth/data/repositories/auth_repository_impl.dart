@@ -201,7 +201,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
     if (await networkInfo.isConnected) {
       try {
-        UserModel someoneUser = Convertor.convertModel(someone);
+        UserModel someoneUser = Convertor.convertUserModel(someone);
         String uid = localAuth.loadData(StorageKeys.UID);
 
         UserModel user = await fireStore.loadUser(uid);
