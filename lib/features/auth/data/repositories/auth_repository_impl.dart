@@ -237,5 +237,37 @@ class AuthRepositoryImpl extends AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, User>> unfollowUser(User someone) async {
+    if (await networkInfo.isConnected) {
+      try {
+        String uid = localAuth.loadData(StorageKeys.UID);
+
+        // I un followed to someone
+        await fireStore.unFollowUser(uid, someone.uid);
+
+        // I am not in someone`s followers
+        await fireStore.unFollowUser(someone.uid, uid);
+
+        someone.followed = false;
+        List<PostModel> list = await fireStorePost.loadPosts(someone.uid);
+
+        for(PostModel post in list){
+          fireStorePost.removeFeed(uid, post.id);
+        }
+
+        return Right(someone);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      } catch(e) {
+        return Left(OtherFailure(e.toString()));
+      }
+    } else {
+      return Left(ConnectFailure());
+    }
+  }
+
 
 }

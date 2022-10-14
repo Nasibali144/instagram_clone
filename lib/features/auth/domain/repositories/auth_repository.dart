@@ -17,4 +17,5 @@ abstract class AuthRepository {
   Future<Either<Failure, User>> updateUserPhoto(File image);
   Future<Either<Failure, List<User>>> searchUsers(String keyword);
   Future<Either<Failure, User>> followUser(User someone);
+  Future<Either<Failure, User>> unfollowUser(User someone);
 }
