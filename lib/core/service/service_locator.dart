@@ -23,8 +23,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final GetIt locator = GetIt.instance;
 
 Future<void> init() async {
-  // Bloc
-  locator.registerFactory(() => AuthBloc(signUpUserUseCase: locator(), signInUserUseCase: locator(), signOutUserUseCase: locator(), deleteUserUseCase: locator()));
+  // TODO: Bloc
+  // locator.registerFactory(() => AuthBloc(signUpUserUseCase: locator(), signInUserUseCase: locator(), signOutUserUseCase: locator(), deleteUserUseCase: locator()));
 
   // Use cases
   locator.registerLazySingleton(() => SignUpUserUseCase(locator()));

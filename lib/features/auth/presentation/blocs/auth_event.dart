@@ -43,3 +43,44 @@ class DeleteUserEvent extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+class FollowUserEvent extends AuthEvent {
+  final User user;
+
+  const FollowUserEvent({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+class LoadUserEvent extends AuthEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class SearchUsersEvent extends AuthEvent {
+  final String keyword;
+
+  const SearchUsersEvent({required this.keyword});
+
+  @override
+  List<Object> get props => [keyword];
+}
+
+class UnfollowUserEvent extends AuthEvent {
+  final User user;
+
+  const UnfollowUserEvent({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+class UpdateUserPhotoEvent extends AuthEvent {
+  final File file;
+
+  const UpdateUserPhotoEvent({required this.file});
+
+  @override
+  List<Object> get props => [file];
+}
