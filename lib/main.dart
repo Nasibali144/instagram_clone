@@ -6,6 +6,7 @@ import 'core/util/observer.dart';
 import 'features/auth/presentation/pages/signin_page.dart';
 import 'features/auth/presentation/pages/signup_page.dart';
 import 'features/auth/presentation/pages/splash_page.dart';
+import 'features/post/presentation/pages/home_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -14,8 +15,6 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.init();
   Bloc.observer = SimpleBlocObserver();
-
-
 
   runApp(const MyApp());
 }
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
         SplashPage.id: (context) => const SplashPage(),
         SignInPage.id: (context) => const SignInPage(),
         SignUpPage.id: (context) => const SignUpPage(),
-        // HomePage.id: (context) => const HomePage(),
+        HomePage.id: (context) => const HomePage(),
       },
     );
   }

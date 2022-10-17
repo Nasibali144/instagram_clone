@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/core/service/service_locator.dart';
 import 'package:instagram_clone/core/util/utility.dart';
 import 'package:instagram_clone/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:instagram_clone/features/post/presentation/pages/home_page.dart';
 import 'signup_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -105,6 +106,7 @@ class _SignInPageState extends State<SignInPage> {
               listener: (context, state) {
                 if(state is SignInSuccessState) {
                   Utils.fireSnackBar("Successfully Sign In", context);
+                  Navigator.pushReplacementNamed(context, HomePage.id);
                 }
               },
               builder: (context, state) {
@@ -155,7 +157,7 @@ class _SignInPageState extends State<SignInPage> {
       ),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           color: Colors.white,
         ),
