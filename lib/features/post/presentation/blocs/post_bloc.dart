@@ -75,7 +75,9 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   void storePost(StorePostEvent event, Emitter<PostState> emit)async {
     emit(PostLoading());
     final failureOrStorePost = await storePostUseCase(StorePostParams(image: event.image, caption: event.caption));
-    failureOrStorePost.fold((failure) => emit(PostError()), (result) => emit( StorePostStateSuccess(image: event.image, caption: event.caption)));
+    failureOrStorePost.fold((failure) => emit(PostError()), (result) {
+      emit(const NavigatePageState(page: 0));
+    });
   }
 
 
