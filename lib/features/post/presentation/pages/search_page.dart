@@ -40,8 +40,7 @@ class _SearchPageState extends State<SearchPage> {
                     // _apiSearchUsers(keyword);
                   },
                   decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                       filled: true,
                       fillColor: Colors.grey.shade200,
                       border: InputBorder.none,
@@ -126,7 +125,7 @@ class _SearchPageState extends State<SearchPage> {
             onPressed: () {},
             child: Text(
               user.followed ? "Following" : "Follow",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black87,
               ),
             ),
