@@ -75,3 +75,11 @@ class GetImageStateSuccess extends PostState {
   List<Object?> get props => [image];
 }
 
+class NavigatePageState extends PostState {
+  final int page;
+  const NavigatePageState({required this.page});
+
+  @override
+  List<Object?> get props => [page];
+}
+

@@ -60,3 +60,12 @@ class CancelImageEvent extends PostEvent {
   @override
   List<Object> get props => [];
 }
+
+class NavigatePageEvent extends PostEvent {
+  final int page;
+
+  const NavigatePageEvent({required this.page});
+
+  @override
+  List<Object> get props => [page];
+}

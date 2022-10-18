@@ -44,7 +44,7 @@ dependencies:
   # objects equals
   equatable: ^2.0.5
 
-  # test
+  # for testing
   mockito: ^5.3.2
 
   # service locator

@@ -1,13 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/core/service/service_locator.dart';
 import 'package:instagram_clone/features/post/presentation/blocs/post_bloc.dart';
 
 class UploadPage extends StatefulWidget {
-  const UploadPage({Key? key}) : super(key: key);
+  final PageController pageController;
+  const UploadPage({Key? key, required this.pageController}) : super(key: key);
 
   @override
   State<UploadPage> createState() => _UploadPageState();
@@ -15,9 +14,6 @@ class UploadPage extends StatefulWidget {
 
 class _UploadPageState extends State<UploadPage> {
   TextEditingController captionController = TextEditingController();
-
-  // PostBloc postBloc = locator<PostBloc>();
-
   late PostBloc postBloc;
 
   @override
@@ -25,7 +21,6 @@ class _UploadPageState extends State<UploadPage> {
     super.didChangeDependencies();
     postBloc = BlocProvider.of<PostBloc>(context);
   }
-
 
   // for image
   _imgFromCamera() async {
@@ -50,8 +45,8 @@ class _UploadPageState extends State<UploadPage> {
             child: Wrap(
               children: <Widget>[
                 ListTile(
-                    leading: Icon(Icons.photo_library),
-                    title: Text('Photo Library'),
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Photo Library'),
                     onTap: () {
                       _imgFromGallery();
                       Navigator.of(context).pop();
@@ -74,7 +69,11 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     return BlocListener<PostBloc, PostState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if(state is NavigatePageState) {
+          widget.pageController.jumpToPage(state.page);
+          captionController.clear();
+          postBloc.add(CancelImageEvent());
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -85,15 +84,24 @@ class _UploadPageState extends State<UploadPage> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                // widget.pageController!.jumpToPage(2);
+            BlocBuilder<PostBloc, PostState>(
+              builder: (context, state) {
+                return IconButton(
+                  onPressed: () {
+                    if (state is GetImageStateSuccess &&
+                        captionController.text.isNotEmpty) {
+                      postBloc.add(StorePostEvent(
+                          image: state.image,
+                          caption: captionController.text.trim()));
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.post_add,
+                    color: Colors.purple,
+                    size: 27.5,
+                  ),
+                );
               },
-              icon: const Icon(
-                Icons.post_add,
-                color: Colors.purple,
-                size: 27.5,
-              ),
             ),
           ],
         ),
@@ -110,6 +118,13 @@ class _UploadPageState extends State<UploadPage> {
                         _showPicker(context);
                       },
                       child: BlocBuilder<PostBloc, PostState>(
+                        buildWhen: (previous, current) {
+                          if(current is GetImageStateSuccess || current is PostInitial || current is NavigatePageState) {
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        },
                         builder: (context, state) {
                           return Container(
                             height: MediaQuery.of(context).size.width,
