@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/core/service/service_locator.dart';
+import 'package:instagram_clone/core/util/utility.dart';
 import 'package:instagram_clone/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:instagram_clone/features/post/presentation/blocs/post_bloc.dart';
 import 'feed_page.dart';
@@ -25,6 +27,22 @@ class _HomePageState extends State<HomePage> {
 
   AuthBloc authBloc = locator<AuthBloc>();
   PostBloc postBloc = locator<PostBloc>();
+
+  _initNotification() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Message: ${message.notification.toString()}");
+      Utils.showLocalNotification(message);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      Utils.showLocalNotification(message);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initNotification();
+  }
 
   @override
   Widget build(BuildContext context) {

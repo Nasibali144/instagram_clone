@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:instagram_clone/core/service/service_locator.dart' as di;
 import 'core/util/observer.dart';
 import 'features/auth/presentation/pages/signin_page.dart';
@@ -14,6 +15,13 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.init();
+
+  // notification
+  var initAndroidSetting = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initIosSetting = const DarwinInitializationSettings();
+  var initSetting = InitializationSettings(android: initAndroidSetting, iOS: initIosSetting);
+  await FlutterLocalNotificationsPlugin().initialize(initSetting);
+
   Bloc.observer = SimpleBlocObserver();
 
   runApp(const MyApp());

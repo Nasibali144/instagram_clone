@@ -1,8 +1,10 @@
  import 'dart:io';
+import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
@@ -95,7 +97,7 @@ class Utils {
      } else {
        var androidDeviceInfo = await deviceInfo.androidInfo;
        params.addAll({
-         // 'device_id': androidDeviceInfo.androidId!,
+         'device_id': androidDeviceInfo.id!,
          'device_type': "A",
          'device_token': fcmToken,
        });
@@ -109,16 +111,16 @@ class Utils {
      String body = message.notification!.body!;
 
      // if(Platform.isAndroid){
-     //   title = message['notification']['title'];
+     //   title = message.notification['title'];
      //   body = message['notification']['body'];
      // }
 
-     // var android = const AndroidNotificationDetails('channelId', 'channelName', channelDescription: 'channelDescription');
-     // var iOS = const IOSNotificationDetails();
-     // var platform = NotificationDetails(android: android, iOS: iOS);
-     //
-     // int id = Random().nextInt((pow(2, 31) - 1).toInt());
-     // await FlutterLocalNotificationsPlugin().show(id, title, body, platform);
+     var android = const AndroidNotificationDetails('channelId', 'channelName', channelDescription: 'channelDescription');
+     var iOS = const DarwinNotificationDetails();
+     var platform = NotificationDetails(android: android, iOS: iOS);
+
+     int id = Random().nextInt((pow(2, 31) - 1).toInt());
+     await FlutterLocalNotificationsPlugin().show(id, title, body, platform);
    }
 
 }

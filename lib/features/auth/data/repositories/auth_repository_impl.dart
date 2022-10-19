@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:instagram_clone/core/datasources/cloud_storage_data_source.dart';
+import 'package:instagram_clone/core/datasources/notification_data_source.dart';
 import 'package:instagram_clone/core/error/exception.dart';
 import 'package:instagram_clone/core/error/failures.dart';
 import 'package:instagram_clone/core/platform/network_info.dart';
 import 'package:instagram_clone/core/util/convertor.dart';
+import 'package:instagram_clone/core/util/utility.dart';
 import 'package:instagram_clone/features/auth/data/datasources/fire_auth_data_source.dart';
 import 'package:instagram_clone/features/auth/data/datasources/fire_store_user_data_source.dart';
 import 'package:instagram_clone/features/auth/data/datasources/local_auth_data_source.dart';
@@ -23,6 +25,7 @@ class AuthRepositoryImpl extends AuthRepository {
   final FireStoreUserDataSource fireStore;
   final CloudStorageDataSource cloudStorage;
   final FireStorePostDataSource fireStorePost;
+  final NotificationDataSource notificationData;
 
   AuthRepositoryImpl({
     required this.fireAuth,
@@ -31,6 +34,7 @@ class AuthRepositoryImpl extends AuthRepository {
     required this.fireStore,
     required this.cloudStorage,
     required this.fireStorePost,
+    required this.notificationData,
   });
 
   @override
@@ -91,12 +95,11 @@ class AuthRepositoryImpl extends AuthRepository {
         user = Convertor.convertEntity(await fireAuth.signUpUser(user), user);
         await localAuth.storeData(StorageKeys.UID, user.uid);
 
-        /// TODO: Store NotificationService
-        // Map<String, String> params = await Utils.deviceParams();
-        //
-        // user.device_id = params["device_id"]!;
-        // user.device_type = params["device_type"]!;
-        // user.device_token = params["device_token"]!;
+        Map<String, String> params = await Utils.deviceParams();
+
+        user.device_id = params["device_id"]!;
+        user.device_type = params["device_type"]!;
+        user.device_token = params["device_token"]!;
 
         await fireStore.storeUser(user);
         return Right(user);
@@ -214,7 +217,7 @@ class AuthRepositoryImpl extends AuthRepository {
         // I am in someone`s followers
         await fireStore.followUser(user, someoneUser);
 
-        /// TODO: send notification someone
+        await notificationData.pushNotification(notificationData.notificationParams(someone.device_token, user.fullName, someone.fullName));
         someoneUser.followed = true;
 
         List<PostModel> posts = await fireStorePost.loadPosts(someoneUser.uid);

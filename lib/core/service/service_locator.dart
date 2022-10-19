@@ -92,7 +92,9 @@ Future<void> init() async {
       networkInfo: locator(),
       fireStore: locator(),
       cloudStorage: locator(),
-      fireStorePost: locator()));
+      fireStorePost: locator(),
+      notificationData: locator()
+  ));
 
   locator.registerLazySingleton<PostRepository>(() => PostRepositoryImpl(fireStorePost: locator(), cloudStorage: locator(), localAuth: locator(), networkInfo: locator(), fireStoreUser: locator()));
 
