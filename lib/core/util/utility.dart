@@ -87,7 +87,7 @@ class Utils {
    static Future<Map<String, String>> deviceParams() async {
      Map<String, String> params = {};
      var deviceInfo = DeviceInfoPlugin();
-     String fcmToken = (locator<LocalAuthDataSourceIml>().loadData(StorageKeys.TOKEN));
+     String fcmToken = (locator<LocalAuthDataSource>().loadData(StorageKeys.TOKEN));
 
      if(Platform.isIOS) {
        var iosDeviceInfo = await deviceInfo.iosInfo;
