@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
       if (kDebugMode) {
         print(token);
       }
-      locator<LocalAuthDataSource>().storeData(StorageKeys.TOKEN, token!);
+      locator<LocalAuthDataSourceIml>().storeData(StorageKeys.TOKEN, token!);
     });
   }
 

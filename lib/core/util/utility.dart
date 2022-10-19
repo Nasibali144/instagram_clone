@@ -5,6 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:instagram_clone/core/service/service_locator.dart';
+import 'package:instagram_clone/features/auth/data/datasources/local_auth_data_source.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
@@ -85,7 +87,7 @@ class Utils {
    static Future<Map<String, String>> deviceParams() async {
      Map<String, String> params = {};
      var deviceInfo = DeviceInfoPlugin();
-     String fcmToken = "(await Prefs.load(StorageKeys.TOKEN))"!;
+     String fcmToken = (locator<LocalAuthDataSourceIml>().loadData(StorageKeys.TOKEN));
 
      if(Platform.isIOS) {
        var iosDeviceInfo = await deviceInfo.iosInfo;
