@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage> {
         body: PageView(
           controller: pageController,
           children: [
-            const FeedPage(),
+            FeedPage(pageController: pageController),
             const SearchPage(),
-            UploadPage(pageController: pageController,),
+            UploadPage(pageController: pageController),
             const LikesPage(),
             const ProfilePage(),
           ],

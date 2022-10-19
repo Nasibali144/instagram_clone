@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/features/auth/domain/entities/user_entity.dart';
 import 'package:instagram_clone/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:instagram_clone/features/auth/presentation/pages/signin_page.dart';
 import 'package:instagram_clone/features/post/domain/entities/post_entity.dart';
 import 'package:instagram_clone/features/post/presentation/blocs/post_bloc.dart';
 
@@ -17,29 +18,22 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool isLoading = false;
   List<Post> items = [];
-  File? _image;
   User? user;
-  int countPosts = 0;
 
   // for user image
   _imgFromCamera() async {
     XFile? image = await ImagePicker()
         .pickImage(source: ImageSource.camera, imageQuality: 50);
 
-    setState(() {
-      _image = File(image!.path);
-    });
+    authBloc.add(UpdateUserPhotoEvent(file: File(image!.path)));
   }
 
   _imgFromGallery() async {
     XFile? image = await ImagePicker()
         .pickImage(source: ImageSource.gallery, imageQuality: 50);
 
-    setState(() {
-      _image = File(image!.path);
-    });
+    authBloc.add(UpdateUserPhotoEvent(file: File(image!.path)));
   }
 
   void _showPicker(context) {
@@ -98,6 +92,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 user = state.user;
               });
             }
+
+            if(state is UpdateUserPhotoSuccessState) {
+              authBloc.add(LoadUserEvent());
+            }
+
+            if(state is SignOutSuccessState) {
+              Navigator.pushReplacementNamed(context, SignInPage.id);
+            }
           },
           builder: (context, state) {
             return Scaffold(
@@ -114,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        // widget.pageController!.jumpToPage(2);
+                        authBloc.add(SignOutUserEvent());
                       },
                       icon: const Icon(
                         Icons.exit_to_app,
@@ -214,12 +216,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: RichText(
                                 textAlign: TextAlign.center,
                                 text: TextSpan(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
-                                    text: countPosts.toString() + "\n",
-                                    children: [
+                                    text: "${items.length}\n",
+                                    children: const [
                                       TextSpan(
                                         style: TextStyle(
                                             color: Colors.grey,
@@ -239,15 +241,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: RichText(
                                 textAlign: TextAlign.center,
                                 text: TextSpan(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
                                     text: user == null
                                         ? "0"
-                                        : user!.followersCount.toString() +
-                                            "\n",
-                                    children: [
+                                        : "${user!.followersCount}\n",
+                                    children: const [
                                       TextSpan(
                                         style: TextStyle(
                                             color: Colors.grey,
@@ -303,7 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
-                  if (isLoading)
+                  if (state is AuthLoading)
                     const Center(
                       child: CircularProgressIndicator(),
                     )

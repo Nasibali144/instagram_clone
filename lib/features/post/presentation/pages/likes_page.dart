@@ -42,21 +42,11 @@ class _LikesPageState extends State<LikesPage> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              "Instagram",
+              "Likes",
               style: TextStyle(
                   color: Colors.black, fontFamily: "Billabong", fontSize: 30),
             ),
             centerTitle: true,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    // widget.pageController!.jumpToPage(2);
-                  },
-                  icon: const Icon(
-                    Icons.camera_alt,
-                    color: Colors.black,
-                  ))
-            ],
           ),
           body: Stack(
             children: [
